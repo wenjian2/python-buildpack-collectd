@@ -1,10 +1,15 @@
 #!/bin/bash
 
+echo "Updating collectd.conf, remote_metrics_target is $remote_metrics_target"
+
 IFS=":"; read -a MT_GRAPHITE_ENDPOINT <<<"$remote_metrics_target"
 IFS=
 
+
 sed "s/REPLACE_METRICS_TARGET_HOST/${MT_GRAPHITE_ENDPOINT[0]}/" -i /home/vcap/app/collectd/etc/collectd.conf
 sed "s/REPLACE_METRICS_TARGET_PORT/${MT_GRAPHITE_ENDPOINT[1]}/" -i /home/vcap/app/collectd/etc/collectd.conf
+
+echo "Updating collectd.conf, $logmet_tenant_id is $logmet_tenant_id"
 
 if [[ -n "$logmet_tenant_id" ]]; then
     sed "s/REPLACE_SPACE_GUID/${logmet_tenant_id}/" -i /home/vcap/app/collectd/etc/collectd.conf
@@ -24,5 +29,5 @@ else
     sed "s/REPLACE_GRAPHITE_PREFIX//" -i /home/vcap/app/collectd/etc/collectd.conf
 fi
 
-echo "Starting collectd"
-/home/vcap/app/collectd/sbin/collectd -C /home/vcap/app/collectd/etc/collectd.conf
+# echo "Starting collectd"
+# /home/vcap/app/collectd/sbin/collectd -C /home/vcap/app/collectd/etc/collectd.conf
