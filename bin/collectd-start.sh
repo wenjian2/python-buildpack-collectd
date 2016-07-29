@@ -2,9 +2,12 @@
 
 echo "Updating collectd.conf, remote_metrics_target is $remote_metrics_target"
 
+ls /home/vcap/app/collectd/etc
+
+ls /app/collectd/etc
+
 IFS=":"; read -a MT_GRAPHITE_ENDPOINT <<<"$remote_metrics_target"
 IFS=
-
 
 sed "s/REPLACE_METRICS_TARGET_HOST/${MT_GRAPHITE_ENDPOINT[0]}/" -i /home/vcap/app/collectd/etc/collectd.conf
 sed "s/REPLACE_METRICS_TARGET_PORT/${MT_GRAPHITE_ENDPOINT[1]}/" -i /home/vcap/app/collectd/etc/collectd.conf
